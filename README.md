@@ -1,4 +1,4 @@
-# TechBlog Portal - Frontend
+# TechBlog Portal - Frontend Mind Group Case
 
 Este é o portal web do TechBlog, uma interface moderna, responsiva e pixel-perfect construída com Next.js (App Router) e Tailwind CSS, desenhada para se alinhar estritamente com o Design System definido no Figma.
 
