@@ -4,11 +4,15 @@ import { useEffect, useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { formatarData } from "@/utils/formatDate";
+import Link from "next/link";
 
 interface Artigo {
   id: number;
   titulo: string;
   conteudo: string;
+  resumo: string | null;     
+  categoria: string | null; 
+  tags: string | null;     
   imagem_banner: string | null;
   autor_nome: string;
   data_publicacao: string;
@@ -40,12 +44,17 @@ export default function Artigos() {
     carregarArtigos();
   }, []);
 
-  // Lógica de Filtro combinada (Busca + Tag)
+  // Lógica de Filtro combinada (Busca de texto + Categoria Real)
   const artigosFiltrados = artigos.filter((artigo) => {
-    const bateBusca = artigo.titulo.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                      artigo.conteudo.toLowerCase().includes(searchQuery.toLowerCase());
+    const termo = searchQuery.toLowerCase();
+  
+    const bateBusca = 
+      artigo.titulo.toLowerCase().includes(termo) || 
+      artigo.conteudo.toLowerCase().includes(termo) ||
+      (artigo.resumo && artigo.resumo.toLowerCase().includes(termo));
     
-    const bateTag = selectedTag === "Todos" || selectedTag === "Desenvolvimento web"; 
+    // Filtro real pela categoria vinda do banco de dados
+    const bateTag = selectedTag === "Todos" || artigo.categoria === selectedTag; 
     
     return bateBusca && bateTag;
   });
@@ -78,18 +87,20 @@ export default function Artigos() {
 
           {/* Filtros da direita */}
           <div className="flex items-center gap-10 w-full md:w-auto justify-between md:justify-end">
-            {/* Select customizado com estilo do Figma */}
+              {/* Dropdown de Categorias - Agora com categorias reais do banco */}
             <div className="flex items-center border border-[#272C35] bg-[#0B0E13] w-[262px] h-[40px] px-3 relative">
-              <span className="text-[#9DA6AF] mr-2"><svg width="19" height="18" viewBox="0 0 19 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M20.5 0.5H0.5L8.5 9.96V16.5L12.5 18.5V9.96L20.5 0.5Z" stroke="#9DA6AF" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
-</span>
+              <span className="text-[#9DA6AF] mr-2">
+                <svg width="19" height="18" viewBox="0 0 19 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M20.5 0.5H0.5L8.5 9.96V16.5L12.5 18.5V9.96L20.5 0.5Z" stroke="#9DA6AF" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </span>
               <select
                 value={selectedTag}
                 onChange={(e) => setSelectedTag(e.target.value)}
                 className="bg-transparent text-sm text-white outline-none w-full appearance-none cursor-pointer pr-6"
               >
-                <option value="Todos" className="bg-[#14181F]">Desenvolvimento web</option>
+                <option value="Todos" className="bg-[#14181F]">Todas as Categorias</option>
+                <option value="Desenvolvimento web" className="bg-[#14181F]">Desenvolvimento web</option>
                 <option value="DevOps" className="bg-[#14181F]">DevOps</option>
                 <option value="IA" className="bg-[#14181F]">Inteligência Artificial</option>
                 <option value="Mobile" className="bg-[#14181F]">Mobile</option>
@@ -135,61 +146,66 @@ export default function Artigos() {
         {loading ? (
           <p className="text-[#9DA6AF] text-center py-20">Carregando acervo técnico...</p>
         ) : artigosFiltrados.length === 0 ? (
-          <p className="text-[#9DA6AF] text-center py-20">Nenhum resultado encontrado para a sua busca.</p>
+          <p className="text-[#9DA6AF] text-center py-20">Nenhum resultado encontrado para a sua busca ou filtro.</p>
         ) : (
           <div className={viewMode === "grid" 
             ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" 
             : "flex flex-col gap-4 w-full"
           }>
             {artigosFiltrados.map((artigo, index) => (
-              <article
-                key={artigo.id}
-                className={`bg-[#14181F] border p-6 transition-all duration-200 ${
-                  index === 1 ? "border-[#07B6D5]" : "border-[#272C35]"
-                } ${viewMode === "grid" ? "flex flex-col gap-4 max-w-[400px] h-[496px]" : "flex flex-col md:flex-row gap-6 w-full h-auto md:h-[236px]"}`}
-              >
-                {/* Imagem do Banner */}
-                <div className={`${
-                  viewMode === "grid" ? "w-full h-[228px]" : "w-full md:w-[352px] h-[188px] md:h-full"
-                } bg-[#272C35] overflow-hidden shrink-0 flex items-center justify-center`}>
-                  {artigo.imagem_banner ? (
-                    <img src={artigo.imagem_banner} alt={artigo.titulo} className="w-full h-full object-cover" />
-                  ) : (
-                    <span className="font-irish text-2xl text-[#9DA6AF]">Lorem ipsum</span>
-                  )}
-                </div>
-
-                {/* Conteúdo de Texto e Informações */}
-                <div className="flex flex-col justify-between flex-grow gap-2">
-                  <div className="flex flex-col gap-2">
-                    <div className="flex justify-between items-center text-xs">
-                      <span className="bg-[#272C35] px-2 py-1 text-white font-medium">Desenvolvimento web</span>
-                      {viewMode === "list" && (
-                        <span className="text-[#9DA6AF]">{formatarData(artigo.data_publicacao)}</span>
-                      )}
-                    </div>
-                    <h3 className={`text-[20px] font-bold leading-tight line-clamp-2 ${index === 1 ? "text-[#07B6D5]" : "text-white"}`}>
-                      {artigo.titulo}
-                    </h3>
-                    <p className="text-[14px] text-white opacity-80 leading-relaxed line-clamp-3">
-                      {artigo.conteudo}
-                    </p>
+              <Link href={`/artigos/${artigo.id}`} key={artigo.id} className="block group">
+                <article
+                  className={`bg-[#14181F] border p-6 transition-all duration-200 cursor-pointer group-hover:border-[#07B6D5] ${
+                    index === 1 ? "border-[#07B6D5]" : "border-[#272C35]"
+                  } ${viewMode === "grid" ? "flex flex-col gap-4 max-w-[400px] h-[496px]" : "flex flex-col md:flex-row gap-6 w-full h-auto md:h-[236px]"}`}
+                >
+                  {/* Imagem do Banner */}
+                  <div className={`${
+                    viewMode === "grid" ? "w-full h-[228px]" : "w-full md:w-[352px] h-[188px] md:h-full"
+                  } bg-[#272C35] overflow-hidden shrink-0 flex items-center justify-center`}>
+                    {artigo.imagem_banner ? (
+                      <img src={artigo.imagem_banner} alt={artigo.titulo} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
+                    ) : (
+                      <span className="font-irish text-2xl text-[#9DA6AF]">Lorem ipsum</span>
+                    )}
                   </div>
 
-                  {/* Metadados de Rodapé */}
-                  <div className="flex justify-between items-center text-sm border-t border-[#272C35] pt-2 mt-auto">
-                    <span className="text-[#9DA6AF]">{artigo.autor_nome}</span>
-                    <div className="flex gap-3 text-xs text-[#9DA6AF]">
-                      {viewMode === "grid" && (
-                        <span className="flex items-center gap-1">🕒 {formatarData(artigo.data_publicacao)}</span>
-                      )}
-                      <span className="flex items-center gap-1">⏱️ 6min</span>
-                      <span className="flex items-center gap-1">👁️ 122</span>
-                      <span className="flex items-center gap-1">❤️ 1</span>
+                  {/* Conteúdo de Texto e Informações */}
+                  <div className="flex flex-col justify-between flex-grow gap-2">
+                    <div className="flex flex-col gap-2">
+                      <div className="flex justify-between items-center text-xs">
+                        {/* Renderiza a categoria dinâmica agora */}
+                        <span className="bg-[#272C35] px-2 py-1 text-white font-medium">
+                          {artigo.categoria || "Geral"}
+                        </span>
+                        {viewMode === "list" && (
+                          <span className="text-[#9DA6AF]">{formatarData(artigo.data_publicacao)}</span>
+                        )}
+                      </div>
+                      <h3 className={`text-[20px] font-bold leading-tight line-clamp-2 transition-colors duration-200 group-hover:text-[#07B6D5] ${index === 1 ? "text-[#07B6D5]" : "text-white"}`}>
+                        {artigo.titulo}
+                      </h3>
+                      {/* Tenta renderizar o resumo novo; se não existir, usa o próprio conteúdo */}
+                      <p className="text-[14px] text-white opacity-80 leading-relaxed line-clamp-3">
+                        {artigo.resumo || artigo.conteudo}
+                      </p>
+                    </div>
+
+                    {/* Metadados de Rodapé */}
+                    <div className="flex justify-between items-center text-sm border-t border-[#272C35] pt-2 mt-auto">
+                      <span className="text-[#9DA6AF]">{artigo.autor_nome}</span>
+                      <div className="flex gap-3 text-xs text-[#9DA6AF]">
+                        {viewMode === "grid" && (
+                          <span className="flex items-center gap-1">🕒 {formatarData(artigo.data_publicacao)}</span>
+                        )}
+                        <span className="flex items-center gap-1">⏱️ 6min</span>
+                        <span className="flex items-center gap-1">👁️ 122</span>
+                        <span className="flex items-center gap-1">❤️ 1</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </article>
+                </article>
+              </Link>
             ))}
           </div>
         )}
