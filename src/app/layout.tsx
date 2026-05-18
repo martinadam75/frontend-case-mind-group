@@ -2,7 +2,12 @@ import type { Metadata } from "next";
 import { Inter, Irish_Grover } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-inter", 
+});
+
 const irishGrover = Irish_Grover({ 
   weight: "400", 
   subsets: ["latin"],
@@ -20,7 +25,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR">
+    <html lang="pt-BR" className={`${inter.variable} ${inter.className}`}>
       <body className={`${inter.variable} ${irishGrover.variable} font-sans bg-[#0B0E13] text-white`}>
         {children}
       </body>
