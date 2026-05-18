@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { formatarData } from "@/utils/formatDate";
 
 interface Artigo {
   id: number;
@@ -38,15 +39,6 @@ export default function Home() {
   // Separa os artigos dinamicamente: os 4 primeiros vão para Destaque, o restante vai para Recentes
   const artigosDestaque = artigos.slice(0, 4);
   const artigosRecentes = artigos.slice(4);
-
-  // Função para formatar a data no formato "dd MMM yyyy" em português
-  const formatarData = (dataString: string) => {
-    return new Date(dataString).toLocaleDateString("pt-BR", {
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-    }).replace(" de", "").replace(".", "");
-  };
 
   return (
     <div className="min-h-screen flex flex-col bg-[#0B0E13] text-[#F9FAFB] font-sans">

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { formatarData } from "@/utils/formatDate";
 
 interface Artigo {
   id: number;
@@ -38,15 +39,6 @@ export default function Artigos() {
     }
     carregarArtigos();
   }, []);
-
-  // Formatação de data padrão pt-BR
-  const formatarData = (dataString: string) => {
-    return new Date(dataString).toLocaleDateString("pt-BR", {
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-    }).replace(" de", "").replace(".", "");
-  };
 
   // Lógica de Filtro combinada (Busca + Tag)
   const artigosFiltrados = artigos.filter((artigo) => {
