@@ -6,23 +6,13 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { formatarData } from "@/utils/formatDate";
-
-interface Artigo {
-  id: number;
-  titulo: string;
-  conteudo: string;
-  resumo: string | null;
-  categoria: string | null;
-  tags: string | null;
-  imagem_banner: string | null;
-  autor_nome: string;
-  data_publicacao: string;
-}
+import { Artigo } from "@/components/ArticleCard";
 
 interface Comentario {
   id: number;
   content: string;
   autor_nome: string;
+  foto_url: string | null;
   created_at: string;
 }
 
@@ -139,7 +129,15 @@ export default function DetalheArtigo() {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center py-6 border-y border-[#2B303B] gap-6">
             <div className="flex items-center gap-4">
               <div className="w-[60px] h-[60px] bg-[#272C35] shrink-0 flex items-center justify-center text-xl overflow-hidden rounded-sm">
-                👨‍💻
+                {artigo.autor_foto ? (
+                    <img 
+                    src={artigo.autor_foto} 
+                    alt={artigo.autor_nome} 
+                    className="w-full h-full object-cover" 
+                    />
+                ) : (
+                    <span className="text-2xl select-none">👨‍💻</span>
+                )}
               </div>
               <div className="flex flex-col gap-1">
                 <span className="text-sm font-medium text-white">{artigo.autor_nome}</span>
@@ -226,7 +224,15 @@ export default function DetalheArtigo() {
                   <div key={comentario.id} className="flex flex-col gap-4 border-b border-[#2B303B] pb-6 last:border-none last:pb-0">
                     <div className="flex justify-between items-start">
                       <div className="flex gap-4 items-center">
-                        <div className="w-[50px] h-[50px] rounded-full bg-[#272C35] flex items-center justify-center text-xl shrink-0">👤</div>
+                        <div className="w-[50px] h-[50px] rounded-full bg-[#272C35] flex items-center justify-center text-xl shrink-0">{comentario.foto_url ? (
+    <img 
+      src={comentario.foto_url} 
+      alt={comentario.autor_nome} 
+      className="w-full h-full object-cover" 
+    />
+  ) : (
+    <span className="text-xl select-none">👨‍💻</span>
+  )}</div>
                         <div className="flex flex-col">
                           <span className="text-sm font-medium text-white">{comentario.autor_nome}</span>
                           <span className="text-xs text-[#9DA6AF]">{formatarData(comentario.created_at)}</span>
