@@ -74,7 +74,7 @@ export default function Home() {
 
       {/* Seção Central de Conteúdo */}
       <main id="destaques" className="max-w-[1240px] mx-auto w-full py-[60px] px-4 flex flex-col gap-[100px]">
-        
+
         {/* Bloco 1: Artigos em Destaque */}
         <section className="flex flex-col gap-9">
           <div className="flex justify-between items-center">
@@ -84,7 +84,7 @@ export default function Home() {
             </div>
             <Link href="/" className="text-[#07B6D5] text-sm font-medium flex items-center gap-1 hover:underline">
               Ver todos
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
             </Link>
           </div>
 
@@ -95,11 +95,10 @@ export default function Home() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4">
               {artigosDestaque.map((artigo, index) => (
-                <article 
-                  key={artigo.id} 
-                  className={`box-sizing p-6 bg-[#14181F] border flex flex-col gap-4 max-w-[400px] h-[496px] ${
-                    index === 1 ? "border-[#07B6D5]" : "border-[#272C35]"
-                  }`}
+                <article
+                  key={artigo.id}
+                  className={`box-sizing p-6 bg-[#14181F] border flex flex-col gap-4 max-w-[400px] h-[496px] ${index === 1 ? "border-[#07B6D5]" : "border-[#272C35]"
+                    }`}
                 >
                   {/* Imagem do Banner */}
                   <div className="w-full h-[228px] bg-[#272C35] overflow-hidden shrink-0 flex items-center justify-center">
@@ -109,13 +108,13 @@ export default function Home() {
                       <span className="font-irish text-2xl text-[#9DA6AF]">Lorem ipsum</span>
                     )}
                   </div>
-                  
+
                   {/* Metadados e Textos */}
                   <div className="flex flex-col gap-3 flex-grow">
                     <div className="flex justify-between items-center text-xs">
                       <span className="bg-[#272C35] px-2 py-1 text-white font-medium">Desenvolvimento web</span>
                       <span className="text-[#9DA6AF] flex items-center gap-1">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
                         {formatarData(artigo.data_publicacao)}
                       </span>
                     </div>
@@ -153,11 +152,10 @@ export default function Home() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4">
               {artigosRecentes.map((artigo, index) => (
-                <article 
-                  key={artigo.id} 
-                  className={`box-sizing p-6 bg-[#14181F] border flex flex-col justify-between max-w-[400px] h-[236px] ${
-                    index === 1 ? "border-[#07B6D5]" : "border-[#272C35]"
-                  }`}
+                <article
+                  key={artigo.id}
+                  className={`box-sizing p-6 bg-[#14181F] border flex flex-col justify-between max-w-[400px] h-[236px] ${index === 1 ? "border-[#07B6D5]" : "border-[#272C35]"
+                    }`}
                 >
                   <div className="flex flex-col gap-3">
                     <div className="text-xs">
@@ -174,7 +172,7 @@ export default function Home() {
                   <div className="flex justify-between items-center text-sm pt-2">
                     <span className="text-[#9DA6AF]">{artigo.autor_nome}</span>
                     <span className="text-[#9DA6AF] text-xs flex items-center gap-1">
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
                       {formatarData(artigo.data_publicacao)}
                     </span>
                   </div>
@@ -189,9 +187,9 @@ export default function Home() {
       <section className="w-full bg-[#14181F] border-y border-[#2B303B] py-10 flex flex-col items-center gap-4 text-center shrink-0">
         <div className="w-[54px] h-[54px] bg-[#0B0E13] border border-[#2B303B] flex items-center justify-center text-xl">
           <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M30 6H6C4.34315 6 3 7.34315 3 9V27C3 28.6569 4.34315 30 6 30H30C31.6569 30 33 28.6569 33 27V9C33 7.34315 31.6569 6 30 6Z" stroke="#F9FAFB" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M33 10.5L19.545 19.05C19.0819 19.3401 18.5465 19.494 18 19.494C17.4535 19.494 16.9181 19.3401 16.455 19.05L3 10.5" stroke="#F9FAFB" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
+            <path d="M30 6H6C4.34315 6 3 7.34315 3 9V27C3 28.6569 4.34315 30 6 30H30C31.6569 30 33 28.6569 33 27V9C33 7.34315 31.6569 6 30 6Z" stroke="#F9FAFB" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M33 10.5L19.545 19.05C19.0819 19.3401 18.5465 19.494 18 19.494C17.4535 19.494 16.9181 19.3401 16.455 19.05L3 10.5" stroke="#F9FAFB" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
 
         </div>
         <h2 className="text-[32px] font-semibold text-white leading-none">Newsletter Semanal</h2>
@@ -199,9 +197,9 @@ export default function Home() {
           Receba os melhores artigos de tecnologia diretamente no seu e-mail. Sem spam, apenas conteúdo de qualidade.
         </p>
         <form onSubmit={(e) => e.preventDefault()} className="flex gap-2 max-w-[377px] w-full px-4 mt-2">
-          <input 
-            type="email" 
-            placeholder="Seu e-mail profissional" 
+          <input
+            type="email"
+            placeholder="Seu e-mail profissional"
             className="h-[44px] px-3 bg-[#0B0E13] border border-[#2B303B] text-[14px] text-[#9DA6AF] outline-none focus:border-[#07B6D5] flex-grow transition-colors"
           />
           <button type="submit" className="h-[44px] px-4 bg-[#07B6D5] text-[#0B0E13] font-medium text-sm hover:bg-opacity-90 transition-all">
